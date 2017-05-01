@@ -31,7 +31,7 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([stdlib.h string.h sys/param.h wchar.h])
 
 # OGRE ----------------------------------------------------
-PKG_CHECK_MODULES(OGRE, [OGRE >= 1.4])
+PKG_CHECK_MODULES(OGRE, [OGRE >= 1.9, OGRE-Overlay >= 1.9])
 AC_SUBST(OGRE_CFLAGS)
 AC_SUBST(OGRE_LIBS)
 
@@ -45,6 +45,13 @@ PKG_CHECK_MODULES(OIS, [OIS >= 0.7])
 AC_SUBST(OIS_CFLAGS)
 AC_SUBST(OIS_LIBS)
 
+AC_CHECK_LIB(boost_system-gcc-mt, main, , [
+  AC_CHECK_LIB(boost_system-mt, main, , [
+    AC_CHECK_LIB(boost_system, main, , [
+      AC_MSG_ERROR("Linking against boost::system library failed.")
+    ])
+  ])
+])
 
 # LUA ----------------------------------------------------
 AC_LANG_PUSH(C)
@@ -68,7 +75,7 @@ if test "x$FUNGU_FOUND_HEADER" = "xno"; then
 else
 	CFLAGS="$CFLAGS $FUNGU_FOUND_HEADER"
 	CPPFLAGS="$CPPFLAGS $FUNGU_FOUND_HEADER"
-	LDFLAGS="$LDFLAGS -llua5.1"
+	LIBS="$LIBS -llua5.1"
 fi
 AC_LANG_POP
 

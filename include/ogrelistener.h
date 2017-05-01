@@ -27,6 +27,7 @@
 #define OGRELISTENER_H
 
 #include <Ogre.h>
+#include <OgreOverlay.h>
 #include <OgreStringConverter.h>
 #include <OgreException.h>
 

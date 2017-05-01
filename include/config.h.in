@@ -16,6 +16,17 @@
 /* Define to 1 if you have the `alut' library (-lalut). */
 #undef HAVE_LIBALUT
 
+/* Define to 1 if you have the `boost_system' library (-lboost_system). */
+#undef HAVE_LIBBOOST_SYSTEM
+
+/* Define to 1 if you have the `boost_system-gcc-mt' library
+   (-lboost_system-gcc-mt). */
+#undef HAVE_LIBBOOST_SYSTEM_GCC_MT
+
+/* Define to 1 if you have the `boost_system-mt' library (-lboost_system-mt).
+   */
+#undef HAVE_LIBBOOST_SYSTEM_MT
+
 /* Define to 1 if you have the `fmodex' library (-lfmodex). */
 #undef HAVE_LIBFMODEX
 
@@ -92,6 +103,9 @@
 
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
+
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
 
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION

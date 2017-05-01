@@ -23,6 +23,7 @@
 //
 //***************************************************************************/
 
+#include <OgreOverlaySystem.h>
 #include "ogreapp.h"
 #include "objectsystem.h"
 #include "effects.h"
@@ -71,6 +72,8 @@ bool OgreApplication::setup() {
 			OGRE_CONFIG_AND_LOG_PATH + "Ogre.log"
 			);
 
+	Ogre::OverlaySystem* pOverlaySystem = new Ogre::OverlaySystem();
+
 	// Random seed
 	srand(time(NULL));
 
@@ -84,7 +87,6 @@ bool OgreApplication::setup() {
 
 	// Parse the resources.cfg
 	ConfigFile::SectionIterator seci = cf.getSectionIterator();
-
 	String secName, typeName, archName;
 	while(seci.hasMoreElements()) {
 		secName = seci.peekNextKey();
@@ -115,6 +117,8 @@ bool OgreApplication::setup() {
 
 	// Create the SceneManager
 	createSceneManager();
+
+	mSceneMgr->addRenderQueueListener(pOverlaySystem);
 
 	// Set up the scene
 	createCamera();

@@ -38,7 +38,7 @@
 #include "mpakogre.h"
 #include <vector>
 
-template<> ScriptSystem* Singleton<ScriptSystem>::ms_Singleton = 0;
+template<> ScriptSystem* Singleton<ScriptSystem>::msSingleton = 0;
 
 
 // Log error messages
@@ -48,7 +48,7 @@ void luaError(const String &str) {
 
 
 // This keeps track of the lights created in script
-static vector<Light*> scriptLights;
+static std::vector<Light*> scriptLights;
 
 
 // File locator for script files
@@ -63,7 +63,7 @@ public:
 		if(!grp)
 			OGRE_EXCEPT(Exception::ERR_ITEM_NOT_FOUND, "Cannot locate a resource group called 'General'", "ResourceGroupManager::openResource");
 		
-		OGRE_LOCK_MUTEX(grp->OGRE_AUTO_MUTEX_NAME) // lock group mutex
+		OGRE_LOCK_MUTEX(grp->OGRE_AUTO_MUTEX_NAME); // lock group mutex
 		ResourceLocationIndex::iterator rit = grp->resourceIndexCaseSensitive.find(filename);
 		if(rit != grp->resourceIndexCaseSensitive.end()) {
 			// Found in the index
@@ -137,7 +137,9 @@ static int CreateAsteroid(lua_State *L) {
 	Asteroid *roid = new Asteroid(String(name), ScriptSystem::getSingleton().getSceneMgr(), String(mesh), String(mat), pos);
 	roid->setScale(scale, scale, scale);
 	roid->setMass(scale * 10.0f);
-	roid->getEntity()->setNormaliseNormals(true);
+
+	// not needed: http://www.ogre3d.org/forums/viewtopic.php?p=294137
+	// roid->getEntity()->setNormaliseNormals(true);
 	return 0;
 }
 
@@ -564,12 +566,12 @@ bool ScriptSystem::executeScript(const char *file) {
 
 
 ScriptSystem *ScriptSystem::getSingletonPtr() {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 ScriptSystem &ScriptSystem::getSingleton() {
-	assert(ms_Singleton);
-	return *ms_Singleton;
+	assert(msSingleton);
+	return *msSingleton;
 }
 
 

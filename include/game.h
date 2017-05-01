@@ -27,6 +27,7 @@
 #define GAME_H
 
 #include "ogreapp.h"
+#include "OgreOverlayManager.h"
 #include "menu.h"
 #include "SimpleIni.h"
 

@@ -48,14 +48,16 @@ public:
 	void load();
 	void unload();
 
-	DataStreamPtr open(const String &filename) const;
+	DataStreamPtr open(const String &filename, bool readOnly = true) const;
 	StringVectorPtr list(bool recursive = true, bool dirs = false);
 	FileInfoListPtr listFileInfo(bool recursive = true, bool dirs = false);
 
 	StringVectorPtr find(const String &pattern, bool recursive = true, bool dirs = false);
-	FileInfoListPtr findFileInfo(const String &pattern, bool recursive, bool dirs = false);
+	FileInfoListPtr findFileInfo(const String& pattern,bool recursive = true, bool dirs = false) const;
 
 	bool exists(const String &filename);
+
+	time_t getModifiedTime(const String& filename) { return 0; };
 };
 
 
@@ -67,6 +69,9 @@ public:
 	const String &getType(void) const;
 
 	Archive *createInstance(const String &name) {
+		return new MPakArchive(name, "MPK");
+	}
+	Archive* createInstance(const String& name, bool readOnly) {
 		return new MPakArchive(name, "MPK");
 	}
 

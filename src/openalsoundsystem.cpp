@@ -35,16 +35,16 @@
 #include "playlist.h"
 #include "mpakogre.h"
 
-template<> OpenALSoundSystem* Singleton<OpenALSoundSystem>::ms_Singleton = 0;
+template<> OpenALSoundSystem* Singleton<OpenALSoundSystem>::msSingleton = 0;
 
 OpenALSoundSystem* OpenALSoundSystem::getSingletonPtr() {
-	return ms_Singleton;
+	return msSingleton;
 }
 
 
 OpenALSoundSystem& OpenALSoundSystem::getSingleton() {
-	assert(ms_Singleton);
-	return *ms_Singleton;
+	assert(msSingleton);
+	return *msSingleton;
 }
 
 
@@ -76,7 +76,7 @@ OpenALSoundSystem::OpenALSoundSystem(SceneManager *mgr)
 	mListenerVelocity[1] = 0.0f;
 	mListenerVelocity[2] = 0.0f;
 
-//	int numDevs = getDevices();
+	int numDevs = getDevices();
 	getDevices();
 
 	String sounds = GameApplication::mGameConfig->GetValue("audio", "sounds", "on");
@@ -150,7 +150,7 @@ std::string OpenALSoundSystem::lastALUTError( ALenum err )
 //----------------------------------------------------------------------------
 int OpenALSoundSystem::getDevices()
 {
-/*	std::string defaultDevice;
+	std::string defaultDevice;
 	// check whether we can query a list of available devices
 	if ( alcIsExtensionPresent(0, "ALC_ENUMERATION_EXT") == AL_TRUE )
 	{
@@ -206,58 +206,57 @@ int OpenALSoundSystem::getDevices()
 		}
 	}
 
-	return mDevices.size();*/
-	return 0;
+	return mDevices.size();
 }
 
 //----------------------------------------------------------------------------
 int OpenALSoundSystem::initialise( unsigned int devIndex )
 {
 	ALenum err;
-/*	int index;
+	int index;
 	// mDevices might be empty, so use the safe index -1 as a last resort. This catches bad indexes as well...
 	if ( devIndex < mDevices.size() )
 		index = static_cast<int>( devIndex );
 	else
 		index = -1;
-*/
-// 	if ( index == -1 ) {
-// 		LogManager::getSingleton().logMessage("OpenALSoundSystem(): initialising OpenAL sound subsystem using the fallback method");
-// 		// Default automatic initialisation via alutInit
-// 		alutGetError();
-// 		if ( ! alutInit(0,0) ) {
-// 			LogManager::getSingleton().logMessage("OpenALSoundSystem: ERROR initialising ALUT: " + lastALUTError(alutGetError()) );
-// 		} else {
-// 			mSoundDisabled = false;
-// 		}
-// 		mContext = alcGetCurrentContext();
-// 		mDevice = alcGetContextsDevice( mContext );
-// 		char* cp = (char*) alcGetString( NULL, ALC_DEFAULT_DEVICE_SPECIFIER );
-// 		while ( strlen(cp) > 0 ) {
-// 			LogManager::getSingleton().logMessage("OpenALSoundSystem(): default device specs are: " + String(cp) );
-// 			cp += strlen(cp)+1;
-// 		}
-// 	} else {
-// 		mDevice = alcOpenDevice( (mDevices[index].c_str()) );
-// 		// create a context
-// 		mContext = alcCreateContext( mDevice, 0 );
-// 		// set active context
-// 		alcMakeContextCurrent( mContext );
-// 		alutGetError();
-// 		if ( ! alutInitWithoutContext(0,0) ) {
-// 			LogManager::getSingleton().logMessage("OpenALSoundSystem: ERROR initialising ALUT: " + lastALUTError(alutGetError()) );
-// 		} else {
-// 			mSoundDisabled = false;
-// 			LogManager::getSingleton().logMessage("OpenALSoundSystem(): initialised OpenAL using device " + mDevices[index] );
-// 		}
-// 	}
+
+	if ( index == -1 ) {
+		LogManager::getSingleton().logMessage("OpenALSoundSystem(): initialising OpenAL sound subsystem using the fallback method");
+		// Default automatic initialisation via alutInit
+		alutGetError();
+		if ( ! alutInit(0,0) ) {
+			LogManager::getSingleton().logMessage("OpenALSoundSystem: ERROR initialising ALUT: " + lastALUTError(alutGetError()) );
+		} else {
+			mSoundDisabled = false;
+		}
+		mContext = alcGetCurrentContext();
+		mDevice = alcGetContextsDevice( mContext );
+		char* cp = (char*) alcGetString( NULL, ALC_DEFAULT_DEVICE_SPECIFIER );
+		while ( strlen(cp) > 0 ) {
+			LogManager::getSingleton().logMessage("OpenALSoundSystem(): default device specs are: " + String(cp) );
+			cp += strlen(cp)+1;
+		}
+	} else {
+		mDevice = alcOpenDevice( (mDevices[index].c_str()) );
+		// create a context
+		mContext = alcCreateContext( mDevice, 0 );
+		// set active context
+		alcMakeContextCurrent( mContext );
+		alutGetError();
+		if ( ! alutInitWithoutContext(0,0) ) {
+			LogManager::getSingleton().logMessage("OpenALSoundSystem: ERROR initialising ALUT: " + lastALUTError(alutGetError()) );
+		} else {
+			mSoundDisabled = false;
+			LogManager::getSingleton().logMessage("OpenALSoundSystem(): initialised OpenAL using device " + mDevices[index] );
+		}
+	}
 
 	// check and initialise Ogg Vorbis support
-// 	if (alcIsExtensionPresent( mDevice, "AL_EXT_vorbis") == AL_TRUE) {
-// 		LogManager::getSingleton().logMessage("OpenALSoundSystem(): OGG Vorbis support available" );
-// 	}
+	if (alcIsExtensionPresent( mDevice, "AL_EXT_vorbis") == AL_TRUE) {
+		LogManager::getSingleton().logMessage("OpenALSoundSystem(): OGG Vorbis support available" );
+	}
 
-
+/*
 	mDevice = alcOpenDevice(0);
 	if (mDevice == 0) {
 		LogManager::getSingleton().logMessage("OpanAL: cannot create OpenAL device" );
@@ -285,7 +284,7 @@ int OpenALSoundSystem::initialise( unsigned int devIndex )
 	} else {
 		mSoundDisabled = false;
 		LogManager::getSingleton().logMessage("OpenALSoundSystem(): initialised OpenAL" );
-	}
+	}*/
 
 	stringstream ss;
 	ss << "OpenAL Vendor: " << alGetString(AL_VENDOR) << std::endl;
