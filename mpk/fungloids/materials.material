@@ -340,7 +340,7 @@ material MushroomFlare1
 				texture glow.png
 				tex_address_mode clamp
 			}
-			texture_unit
+			texture_unit modulation
 			{
 				colour_op_ex modulate src_current src_manual 0.5 0.2 0.1
 			}
@@ -354,7 +354,7 @@ material MushroomFlare2 : MushroomFlare1
 	{
 		pass
 		{
-			texture_unit 1
+			texture_unit modulation
 			{
 				colour_op_ex modulate src_current src_manual 0.2 0.5 0.1
 			}
@@ -368,7 +368,7 @@ material MushroomFlare3 : MushroomFlare1
 	{
 		pass
 		{
-			texture_unit 1
+			texture_unit modulation
 			{
 				colour_op_ex modulate src_current src_manual 0.1 0.2 0.5
 			}
