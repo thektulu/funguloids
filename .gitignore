@@ -1,1 +1,7 @@
 autom4te.cache
+Makefile
+config.log
+config.status
+include/config.h
+include/stamp-h1
+src/.deps/
