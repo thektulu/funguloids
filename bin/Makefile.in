@@ -739,18 +739,24 @@ resources.cfg: resources.cfg.in
 	cat resources.cfg.in | sed 's,%%gameinstalldir%%,@gameinstalldir@/,' > resources.cfg
 
 # copy the exe into this dir only for developing, real installation is done directly in ../bin/Makefile
-all:
+all: bootstrap.mpk funguloids.mpk
 	cp -a ../src/funguloids .
 
-install-data-hook:
+bootstrap.mpk: $(top_srcdir)/src/makempk
+	$(top_srcdir)/src/makempk add bootstrap.mpk $(top_srcdir)/mpk/bootstrap/*
+
+funguloids.mpk: $(top_srcdir)/src/makempk
+	$(top_srcdir)/src/makempk add funguloids.mpk $(top_srcdir)/mpk/funguloids/*
+
+install-data-hook: bootstrap.mpk funguloids.mpk
 	if test "x@highscoredir@" != "x"; then \
 		mkdir -p "@highscoredir@"; \
 		if test ! -e "@highscoredir@/hiscore.lst"; then cp hiscore.lst.in "@highscoredir@/hiscore.lst"; fi; \
 		chgrp -R @highscoregroup@ "@highscoredir@"; \
 		chmod -R g+w "@highscoredir@"; \
 	fi; \
-	if test -r bootstrap.mpk; then cp bootstrap.mpk "@gameinstalldir@"; fi; \
-	if test -r funguloids.mpk; then cp funguloids.mpk "@gameinstalldir@"; fi
+	cp bootstrap.mpk "@gameinstalldir@"
+	cp funguloids.mpk "@gameinstalldir@"
 
 uninstall-hook:
 	rm -rf "@docinstalldir@"
@@ -758,7 +764,7 @@ uninstall-hook:
 distclean: clean
 
 clean:
-	-rm -f funguloids funguloids.sh plugins.cfg resources.cfg Ogre.log ogre.cfg *~
+	-rm -f funguloids funguloids.sh plugins.cfg resources.cfg Ogre.log ogre.cfg bootstrap.mpk funguloids.mpk *~
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

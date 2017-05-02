@@ -87,6 +87,7 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bininstall_PROGRAMS = funguloids$(EXEEXT)
+noinst_PROGRAMS = makempk$(EXEEXT)
 subdir = src
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
@@ -99,7 +100,7 @@ CONFIG_HEADER = $(top_builddir)/include/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bininstalldir)"
-PROGRAMS = $(bininstall_PROGRAMS)
+PROGRAMS = $(bininstall_PROGRAMS) $(noinst_PROGRAMS)
 am_funguloids_OBJECTS = funguloids-asteroid.$(OBJEXT) \
 	funguloids-ballworm.$(OBJEXT) funguloids-base.$(OBJEXT) \
 	funguloids-bground.$(OBJEXT) funguloids-blackhole.$(OBJEXT) \
@@ -125,6 +126,9 @@ funguloids_OBJECTS = $(am_funguloids_OBJECTS)
 funguloids_DEPENDENCIES =
 funguloids_LINK = $(CXXLD) $(funguloids_CXXFLAGS) $(CXXFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
+am_makempk_OBJECTS = makempk-makempk.$(OBJEXT) makempk-mpak.$(OBJEXT)
+makempk_OBJECTS = $(am_makempk_OBJECTS)
+makempk_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -158,8 +162,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(funguloids_SOURCES)
-DIST_SOURCES = $(funguloids_SOURCES)
+SOURCES = $(funguloids_SOURCES) $(makempk_SOURCES)
+DIST_SOURCES = $(funguloids_SOURCES) $(makempk_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -335,6 +339,10 @@ funguloids_SOURCES = asteroid.cpp \
 	tentacles.cpp \
 	whirler.cpp
 
+makempk_CPPFLAGS = -I$(top_srcdir)/include
+makempk_SOURCES = makempk.cpp \
+	mpak.cpp
+
 all: all-am
 
 .SUFFIXES:
@@ -411,9 +419,16 @@ uninstall-bininstallPROGRAMS:
 clean-bininstallPROGRAMS:
 	-test -z "$(bininstall_PROGRAMS)" || rm -f $(bininstall_PROGRAMS)
 
+clean-noinstPROGRAMS:
+	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
+
 funguloids$(EXEEXT): $(funguloids_OBJECTS) $(funguloids_DEPENDENCIES) $(EXTRA_funguloids_DEPENDENCIES) 
 	@rm -f funguloids$(EXEEXT)
 	$(AM_V_CXXLD)$(funguloids_LINK) $(funguloids_OBJECTS) $(funguloids_LDADD) $(LIBS)
+
+makempk$(EXEEXT): $(makempk_OBJECTS) $(makempk_DEPENDENCIES) $(EXTRA_makempk_DEPENDENCIES) 
+	@rm -f makempk$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(makempk_OBJECTS) $(makempk_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -453,6 +468,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/funguloids-streamplayer.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/funguloids-tentacles.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/funguloids-whirler.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/makempk-makempk.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/makempk-mpak.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -916,6 +933,34 @@ funguloids-whirler.obj: whirler.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(funguloids_CPPFLAGS) $(CPPFLAGS) $(funguloids_CXXFLAGS) $(CXXFLAGS) -c -o funguloids-whirler.obj `if test -f 'whirler.cpp'; then $(CYGPATH_W) 'whirler.cpp'; else $(CYGPATH_W) '$(srcdir)/whirler.cpp'; fi`
 
+makempk-makempk.o: makempk.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(makempk_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT makempk-makempk.o -MD -MP -MF $(DEPDIR)/makempk-makempk.Tpo -c -o makempk-makempk.o `test -f 'makempk.cpp' || echo '$(srcdir)/'`makempk.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/makempk-makempk.Tpo $(DEPDIR)/makempk-makempk.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='makempk.cpp' object='makempk-makempk.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(makempk_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o makempk-makempk.o `test -f 'makempk.cpp' || echo '$(srcdir)/'`makempk.cpp
+
+makempk-makempk.obj: makempk.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(makempk_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT makempk-makempk.obj -MD -MP -MF $(DEPDIR)/makempk-makempk.Tpo -c -o makempk-makempk.obj `if test -f 'makempk.cpp'; then $(CYGPATH_W) 'makempk.cpp'; else $(CYGPATH_W) '$(srcdir)/makempk.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/makempk-makempk.Tpo $(DEPDIR)/makempk-makempk.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='makempk.cpp' object='makempk-makempk.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(makempk_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o makempk-makempk.obj `if test -f 'makempk.cpp'; then $(CYGPATH_W) 'makempk.cpp'; else $(CYGPATH_W) '$(srcdir)/makempk.cpp'; fi`
+
+makempk-mpak.o: mpak.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(makempk_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT makempk-mpak.o -MD -MP -MF $(DEPDIR)/makempk-mpak.Tpo -c -o makempk-mpak.o `test -f 'mpak.cpp' || echo '$(srcdir)/'`mpak.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/makempk-mpak.Tpo $(DEPDIR)/makempk-mpak.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mpak.cpp' object='makempk-mpak.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(makempk_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o makempk-mpak.o `test -f 'mpak.cpp' || echo '$(srcdir)/'`mpak.cpp
+
+makempk-mpak.obj: mpak.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(makempk_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT makempk-mpak.obj -MD -MP -MF $(DEPDIR)/makempk-mpak.Tpo -c -o makempk-mpak.obj `if test -f 'mpak.cpp'; then $(CYGPATH_W) 'mpak.cpp'; else $(CYGPATH_W) '$(srcdir)/mpak.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/makempk-mpak.Tpo $(DEPDIR)/makempk-mpak.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mpak.cpp' object='makempk-mpak.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(makempk_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o makempk-mpak.obj `if test -f 'mpak.cpp'; then $(CYGPATH_W) 'mpak.cpp'; else $(CYGPATH_W) '$(srcdir)/mpak.cpp'; fi`
+
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
 tags: tags-am
@@ -1037,7 +1082,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-bininstallPROGRAMS clean-generic mostlyclean-am
+clean-am: clean-bininstallPROGRAMS clean-generic clean-noinstPROGRAMS \
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -1107,18 +1153,19 @@ uninstall-am: uninstall-bininstallPROGRAMS
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
-	clean-bininstallPROGRAMS clean-generic cscopelist-am ctags \
-	ctags-am distclean distclean-compile distclean-generic \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-bininstallPROGRAMS install-data \
-	install-data-am install-dvi install-dvi-am install-exec \
-	install-exec-am install-html install-html-am install-info \
-	install-info-am install-man install-pdf install-pdf-am \
-	install-ps install-ps-am install-strip installcheck \
-	installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-compile \
-	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am uninstall-bininstallPROGRAMS
+	clean-bininstallPROGRAMS clean-generic clean-noinstPROGRAMS \
+	cscopelist-am ctags ctags-am distclean distclean-compile \
+	distclean-generic distclean-tags distdir dvi dvi-am html \
+	html-am info info-am install install-am \
+	install-bininstallPROGRAMS install-data install-data-am \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installdirs maintainer-clean maintainer-clean-generic \
+	mostlyclean mostlyclean-compile mostlyclean-generic pdf pdf-am \
+	ps ps-am tags tags-am uninstall uninstall-am \
+	uninstall-bininstallPROGRAMS
 
 .PRECIOUS: Makefile
 
