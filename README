@@ -2,11 +2,12 @@
 
 Fork of unmaintained "Those Funny Funguloids!"
 
-Added required changes for Ogre 1.9.
-Make it buildable on Ubuntu 16.04.
+DONE:
+    * make required changes for Ogre 1.9.
+    * make it buildable on Ubuntu 16.04.
+    * build mpk files from mpk/ directories on "make"
 
 TODO:
-    * build mpk files from mpk/ directories on "make"
     * more Ogre 1.9 updates
     * drop cg
     * upgrade to Ogre 1.10
