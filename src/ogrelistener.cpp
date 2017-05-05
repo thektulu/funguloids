@@ -77,9 +77,6 @@ void OgreAppFrameListener::registerCompositors() {
 	effect = StringConverter::parseReal(str);
 	effect *= 0.5f;
 	mat->setSelfIllumination(effect, effect, effect);
-
-	CompositorManager::getSingleton().addCompositor(vp, "B&W");
-	CompositorManager::getSingleton().setCompositorEnabled(vp, "B&W", true);
 }
 
 

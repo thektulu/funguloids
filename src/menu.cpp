@@ -92,10 +92,6 @@ void OgreAppFrameListener::doMenu(Real delta) {
 	if(newState == -1) return;
 
 	if(newState == STATE_GAME) {
-		// Black and White off
-		Viewport *vp = gameApp->getRenderWindow()->getViewport(0);
-		CompositorManager::getSingleton().setCompositorEnabled(vp, "B&W", false);
-
 		// Scroller off
 		OverlayManager::getSingleton().getByName("MenuScroller")->hide();
 		OverlayManager::getSingleton().getByName("TitleScreen")->hide();
@@ -175,10 +171,6 @@ void Menu::setMenu(const String &menu, int selection) {
 	for(int f=0; f<mNumItems; f++)
 		dimItem(f);
 	hilightItem(mSelection);
-
-	// Black and White on
-	Viewport *vp = gameApp->getRenderWindow()->getViewport(0);
-	CompositorManager::getSingleton().setCompositorEnabled(vp, "B&W", true);
 
 	// Scroller on
 	OverlayManager::getSingleton().getByName("MenuScroller")->show();
