@@ -6,10 +6,10 @@ DONE:
     * make required changes for Ogre 1.9.
     * make it buildable on Ubuntu 16.04.
     * build mpk files from mpk/ directories on "make"
-
-TODO:
     * more Ogre 1.9 updates
     * drop cg
+
+TODO:
     * upgrade to Ogre 1.10
 
 LONG-TERM TODO:
