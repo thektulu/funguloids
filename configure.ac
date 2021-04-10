@@ -238,13 +238,13 @@ if test "x$prefix" = "xNONE" -o "x$prefix" = "x"; then
 	prefix="/usr/local"
 fi
 
-bininstalldir="${prefix}/games"
-gameinstalldir="${prefix}/share/games/funguloids"
-iconinstalldir="${prefix}/share/games/funguloids/icon"
-musicinstalldir="${prefix}/share/games/funguloids/music"
-docinstalldir="${prefix}/share/docs/funguloids"
-docimageinstalldir="${prefix}/share/docs/funguloids/docs"
-pixmapinstalldir="${prefix}/share/pixmaps"
+bininstalldir="${bindir}"
+gameinstalldir="${datadir}/funguloids"
+iconinstalldir="${gameinstalldir}/icon"
+musicinstalldir="${gameinstalldir}/music"
+docinstalldir="${docdir}"
+docimageinstalldir="${docinstalldir}/docs"
+pixmapinstalldir="${datarootdir}/pixmaps"
 
 AC_SUBST(prefix)
 AC_SUBST(bininstalldir)
