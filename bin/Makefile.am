@@ -4,7 +4,7 @@ EXTRA_DIST = plugins.cfg.in resources.cfg.in hiscore.lst.in
 dist_pixmapinstall_DATA = funguloids.png
 dist_gameinstall_DATA = gamesettings.cfg
 dist_docinstall_DATA = readme.html
-gameinstall_DATA = plugins.cfg resources.cfg
+gameinstall_DATA = plugins.cfg resources.cfg bootstrap.mpk funguloids.mpk
 
 plugins.cfg: plugins.cfg.in
 	cat plugins.cfg.in | sed 's,%%ogreplugindir%%,@ogreplugindir@/,' > plugins.cfg
@@ -24,15 +24,13 @@ funguloids.mpk: $(top_srcdir)/src/makempk
 	$(top_srcdir)/src/makempk add funguloids.mpk $(top_srcdir)/mpk/funguloids/*
 
 
-install-data-hook: bootstrap.mpk funguloids.mpk
+install-data-hook:
 	if test "x@highscoredir@" != "x"; then \
 		mkdir -p "@highscoredir@"; \
 		if test ! -e "@highscoredir@/hiscore.lst"; then cp hiscore.lst.in "@highscoredir@/hiscore.lst"; fi; \
 		chgrp -R @highscoregroup@ "@highscoredir@"; \
 		chmod -R g+w "@highscoredir@"; \
-	fi; \
-	cp bootstrap.mpk "@gameinstalldir@"
-	cp funguloids.mpk "@gameinstalldir@"
+	fi;
 
 uninstall-hook:
 	rm -rf "@docinstalldir@"

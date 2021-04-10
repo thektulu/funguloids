@@ -1,13 +1,9 @@
-musicinstall_DATA = playlist.lua
+musicinstall_DATA = playlist.lua MarylandInMay.ogg
 
 EXTRA_DIST = playlist.lua.in
 
 playlist.lua: playlist.lua.in
 	cat playlist.lua.in | sed 's,%%musicinstalldir%%,@musicinstalldir@,' > playlist.lua
-
-install-data-hook:
-	if test -r MarylandInMay.ogg; then cp MarylandInMay.ogg "@musicinstalldir@"; fi;
-
 
 distclean: clean
 
