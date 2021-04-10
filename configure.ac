@@ -54,30 +54,11 @@ AC_CHECK_LIB(boost_system-gcc-mt, main, , [
 ])
 
 # LUA ----------------------------------------------------
-AC_LANG_PUSH(C)
-AC_ARG_WITH(lua,
-[  --with-lua[[=DIR]] specify the path to the Lua 5.1 include files [[autodetect]]],
-[
-	if test "x$withval" != "x"; then
-		lua_dir="$withval"
-	fi
-],[
-	lua_dir=
+PKG_CHECK_MODULES(LUA, [lua >= 5.1],[],[
+  PKG_CHECK_MODULES(LUA, [lua5.1 >= 5.1],[],[
+    AC_MSG_ERROR(Lua 5.1 not found)
+  ])
 ])
-
-FUNGU_SEARCH_HEADER( [lua.h], [$lua_dir /usr/local /usr], [ include/lua5.1 include/lua / ] )
-if test "x$FUNGU_FOUND_HEADER" = "xno"; then
-	PKG_CHECK_MODULES(LUA, [lua >= 5.1],[],[
-		PKG_CHECK_MODULES(LUA, [lua5.1 >= 5.1],[],[
-			AC_MSG_ERROR(Lua 5.1 not found. You can specify its location with [[--with-lua=/path/to/include/lua51]])
-		])
-	])
-else
-	CFLAGS="$CFLAGS $FUNGU_FOUND_HEADER"
-	CPPFLAGS="$CPPFLAGS $FUNGU_FOUND_HEADER"
-	LIBS="$LIBS -llua5.1"
-fi
-AC_LANG_POP
 
 AC_SUBST(LUA_CFLAGS)
 AC_SUBST(LUA_LIBS)

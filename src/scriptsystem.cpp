@@ -38,6 +38,11 @@
 #include "mpakogre.h"
 #include <vector>
 
+// Lua dropped with Lua5.2
+#ifndef lua_open
+#define lua_open()     luaL_newstate()
+#endif
+
 template<> ScriptSystem* Singleton<ScriptSystem>::msSingleton = 0;
 
 
@@ -519,6 +524,7 @@ void ScriptSystem::destroyScriptLights() {
 // Execute a single string of script
 bool ScriptSystem::executeString(const char *str) {
 	assert(mLuaVM);
+	luaL_openlibs(mLuaVM);
 	if(luaL_dostring(mLuaVM, str))
 		return false;
 	return true;
